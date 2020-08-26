@@ -1,8 +1,8 @@
 import Express from 'express';
 import { NO_CONTENT } from 'http-status-codes';
-import Logger from '../../config/logger';
-import upload from '../../config/multer';
-import { convertCsvToJson } from '../../utils';
+import Logger from '../config/logger';
+import upload from '../config/multer';
+import { convertCsvToJson } from '../utils';
 
 const DataImportController = Express.Router();
 const LOG = new Logger('DataImportController.js');
