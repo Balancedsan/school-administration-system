@@ -6,8 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   class TeacherStudent extends Model {
   }
   TeacherStudent.init({
-    teacher_email: DataTypes.STRING,
-    student_email: DataTypes.STRING
+    is_teaching: DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'TeacherStudent',

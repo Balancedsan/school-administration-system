@@ -2,13 +2,10 @@
 const {
   Model
 } = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
+module.exports = (sequelize) => {
   class TeacherSubject extends Model {
   }
-  TeacherSubject.init({
-    teacher_email: DataTypes.STRING,
-    subject_code: DataTypes.STRING
-  }, {
+  TeacherSubject.init({}, {
     sequelize,
     modelName: 'TeacherSubject',
   });

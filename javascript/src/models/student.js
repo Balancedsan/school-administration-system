@@ -6,9 +6,12 @@ module.exports = (sequelize, DataTypes) => {
   class Student extends Model {
 
     static associate(models) {
-      Student.belongsToMany(models.ClassStudent,{
+      Student.belongsToMany(models.Class,{
         through: 'ClassStudent',
-        foreignKey: 'student_email'
+      })
+
+      Student.belongsToMany(models.Teacher,{
+        through: 'TeacherStudent'
       })
     }
   }
