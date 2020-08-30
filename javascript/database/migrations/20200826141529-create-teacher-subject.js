@@ -2,29 +2,35 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('TeacherSubjects', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
-      },
-      teacher_email: {
-        type: Sequelize.STRING
-      },
-      subject_code: {
-        type: Sequelize.STRING
-      },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
+      teacher_email: {
+        type: Sequelize.STRING,
+        primaryKey: true,
+        onDelete: 'cascade',
+        references: {
+          model: 'Teachers',
+          key: 'teacher_email',
+        },
+      },
+      subject_code: {
+        type: Sequelize.STRING,
+        primaryKey: true,
+        onDelete: 'cascade',
+        references: {
+          model: 'Subjects',
+          key: 'subject_code'
+        }
+      },
     });
   },
   down: async (queryInterface) => {
     await queryInterface.dropTable('TeacherSubjects');
-  }
+  },
 };

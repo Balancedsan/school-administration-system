@@ -2,7 +2,7 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Students', {
-      student_code: {
+      student_email: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.STRING

@@ -2,29 +2,41 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('TeacherStudents', {
-      id: {
+      is_teaching: {
+        type: Sequelize.BOOLEAN,
         allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
       },
       teacher_email: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: true,
+        onDelete: 'cascade',
+        primaryKey: true,
+        references: {
+          model: 'Teachers',
+          key: 'teacher_email'
+        },
       },
       student_email: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: true,
+        primaryKey: true,
+        onDelete: 'cascade',
+        references: {
+          model : 'Students',
+          key: 'student_email'
+        }
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   down: async (queryInterface) => {
     await queryInterface.dropTable('TeacherStudents');
-  }
+  },
 };

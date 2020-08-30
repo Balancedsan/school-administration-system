@@ -2,17 +2,25 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('ClassStudents', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
-      },
-      class_code: {
-        type: Sequelize.STRING
-      },
       student_email: {
-        type: Sequelize.STRING
+        allowNull: false,
+        primaryKey: true,
+        onDelete: 'cascade',
+        type: Sequelize.STRING,
+        references:{
+          model: 'Students',
+          key: 'student_email'
+        }
+      },
+      class_code:{
+        allowNull:false,
+        type: Sequelize.STRING,
+        onDelete: 'cascade',
+        primaryKey:true,
+        references: {
+          model : 'Classes',
+          key: 'class_code'
+        }
       },
       createdAt: {
         allowNull: false,
