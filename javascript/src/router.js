@@ -1,5 +1,5 @@
 import Express from 'express';
-import DataImportController from './controllers/DataImportController';
+import DataImportController from './controllers/DataImportController/DataImportController';
 import HealthcheckController from './controllers/HealthcheckController';
 
 const router = Express.Router();
