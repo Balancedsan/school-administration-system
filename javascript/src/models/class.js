@@ -8,19 +8,34 @@ module.exports = (sequelize, DataTypes) => {
       });
 
       Class.belongsToMany(models.Teacher, {
-        through : 'TeacherClass',
-      })
-
+        through: 'TeacherClass',
+      });
     }
   }
   Class.init(
     {
-      class_code: DataTypes.STRING,
-      class_name: DataTypes.STRING,
+      classCode: {
+        type: DataTypes.STRING,
+        primaryKey: true,
+      },
+      className: {
+        type:DataTypes.STRING,
+        allowNull:false
+      },
+      createdAt: {
+        type: DataTypes.DATE,
+        field: 'createdAt',
+      },
+      updatedAt: {
+        type: DataTypes.DATE,
+        field: 'updatedAt',
+      }
     },
     {
       sequelize,
       modelName: 'Class',
+      underscored: true,
+      tableName: 'Classes',
     }
   );
   return Class;

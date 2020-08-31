@@ -12,11 +12,24 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Subject.init({
-    subject_code: DataTypes.STRING,
-    subject_name: DataTypes.STRING
+    subjectCode: {
+      type: DataTypes.STRING,
+      primaryKey:true
+    },
+    subjectName: DataTypes.STRING,
+    createdAt: {
+      type: DataTypes.DATE,
+      field: 'createdAt'
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      field: 'updatedAt'
+    }
   }, {
     sequelize,
     modelName: 'Subject',
+    underscored:true,
+    tableName: 'Subjects'
   });
   return Subject;
 };
