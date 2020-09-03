@@ -1,20 +1,18 @@
 import Express from 'express';
 import Logger from '../../config/logger';
+import fileParser from './middleware/fileParser';
 import upload from '../../config/multer';
-import { convertCsvToJson } from '../../utils';
 import getMappedData from './utils/getMappedData/getMappedData';
 import getPrimaryKeysToDelete from './utils/getPrimaryKeysToDelete/getPrimaryKeysToDelete';
 import model from '../../models/index';
-import { Op } from 'sequelize';
 
 const DataImportController = Express.Router();
 const LOG = new Logger('DataImportController.js');
 
 const dataImportHandlerCreate = async (req, res, next) => {
-  const { file } = req;
+  const { csvData } = req;
 
   try {
-    const data = await convertCsvToJson(file.path);
     const [
       teacherData,
       studentData,
@@ -24,7 +22,7 @@ const dataImportHandlerCreate = async (req, res, next) => {
       teacherClassData,
       teacherSubjectData,
       classStudentData,
-    ] = getMappedData(data);
+    ] = getMappedData(csvData);
 
     await model.sequelize.transaction(async (t) => {
       await model.Student.bulkCreate(studentData, { transaction: t });
@@ -44,16 +42,14 @@ const dataImportHandlerCreate = async (req, res, next) => {
     LOG.error(err);
     return next(err);
   }
-
-  return res.sendStatus(204);
+  return res.status(204).send('excel data is imported successfully');
 };
 
 const dataImportHandlerUpdate = async (req, res, next) => {
-  const { file } = req;
+  const { csvData } = req;
   try {
-    const data = await convertCsvToJson(file.path);
     const [teacherData, studentData, classData, subjectData] = getMappedData(
-      data
+      csvData
     );
 
     await model.sequelize.transaction(async (t) => {
@@ -78,18 +74,20 @@ const dataImportHandlerUpdate = async (req, res, next) => {
     LOG.error(err);
     return next(err);
   }
+
+  return res.status(204).send('data is updated successfully');
 };
 
 const dataImportHandlerDelete = async (req, res, next) => {
-  const { file } = req;
+  const { csvData } = req;
+
   try {
-    const data = await convertCsvToJson(file.path);
     const [
       teacherKey,
       studentKey,
       classKey,
       subjectKey,
-    ] = getPrimaryKeysToDelete(data);
+    ] = getPrimaryKeysToDelete(csvData);
 
     await model.sequelize.transaction(async (t) => {
       await model.Teacher.destroy(
@@ -136,6 +134,8 @@ const dataImportHandlerDelete = async (req, res, next) => {
         }
       );
     });
+
+    return res.status(204).send('successfully deleted data from the table');
   } catch (err) {
     LOG.error(err);
     return next(err);
@@ -145,18 +145,21 @@ const dataImportHandlerDelete = async (req, res, next) => {
 DataImportController.post(
   '/upload',
   upload.single('data'),
+  fileParser,
   dataImportHandlerCreate
 );
 
 DataImportController.delete(
   '/upload',
   upload.single('data'),
+  fileParser,
   dataImportHandlerDelete
 );
 
 DataImportController.put(
   '/upload',
   upload.single('data'),
+  fileParser,
   dataImportHandlerUpdate
 );
 
