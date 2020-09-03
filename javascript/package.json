@@ -11,7 +11,8 @@
     "start:dev": "nodemon --exec babel-node src/server.js",
     "start:services": "docker-compose up -d",
     "lint": "eslint \"src/**/*.js\"",
-    "migrate-test":"sequelize db:migrate --env test"
+    "migrate:test":"sequelize db:migrate --env test",
+    "migrate:dev":"sequelize db:migrate"
   },
   "license": "ISC",
   "dependencies": {
