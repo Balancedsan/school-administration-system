@@ -13,6 +13,16 @@ services:
     volumes:
       - ./database:/docker-entrypoint-initdb.d:ro
 
+  test:
+      container_name: school-administration-system-test-mysql
+      image: mysql
+      command: --default-authentication-plugin=mysql_native_password
+      environment:
+        MYSQL_ROOT_PASSWORD: password
+        MYSQL_DATABASE: school-administration-system-test
+      ports:
+         - "3307:3306"
+
   external:
     container_name: school-administration-system-external
     build:
